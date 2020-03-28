@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+#yourBtn {
+  position: relative;
+  top: 10px;
+  width: 200px;
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border: 1px  #BBB;
+  text-align: center;
+  color: #fff;
+  background-color: #317DF5;
+  cursor: pointer;
+
+#content {
+    display: none;
+    }
+
+#loading {
+    top: 200 px;
+    margin: auto;
+    position: absolute;
+    z-index: 1000;
+    width: 160px;
+    height: 24px;
+    background: url(/static/ajax-loader.gif) no-repeat;
+    cursor: wait;
+    }
+</style>
+
+    <h1>Audio Transcription</h1>
+
+
+<!--<div id="loading" class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">-->
+<!--  <span class="sr-only">Loading...</span>-->
+<!--</div>-->
+
+<div id="loading">
+<button  class="btn btn-primary" type="button" disabled>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Loading...
+</button>
+</div>
+
+<div id="content">
+    <!--new job -->
+    {% if postID == "new" %}
+        <form action="{{url_for('transcribe_submit',postID=postID)}}" method="POST" enctype="multipart/form-data" name="myForm">
+          <div id="yourBtn" onclick="getFile()" >click to upload a file</div>
+          <div style='height: 0px;width: 0px; overflow:hidden;'><input id="upfile" type="file" value="upload" onchange="sub(this); loading()" name="file"/></div>
+        </form>
+    {% endif %}
+
+    <!--display job-->
+    {% if result != "" %}
+        <br><br>
+        <div>
+            <audio controls>
+                <source src={{url}} >
+            </audio>
+            <br> Uploaded file: <a href="{{url}}"> {{file}} </a>
+            <br><br><br>
+            <p>{{result}}</p>
+        </div>
+        <br><br><br>
+        <form action="{{ url_for('transcribe_delete', postID=postID)}}" method="post">
+            <button type="submit" class="btn btn-link">Delete </button>
+        </form>
+    {% endif %}
+</div>
+
+<script>
+function getFile() {
+  document.getElementById("upfile").click();
+}
+
+function sub(obj) {
+  var file = obj.value;
+  var fileName = file.split("\\");
+  document.getElementById("yourBtn").innerHTML = fileName[fileName.length - 1];
+  document.myForm.submit();
+  event.preventDefault();
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+#yourBtn {
+  position: relative;
+  top: 10px;
+  width: 200px;
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+
+  border: 1px  #BBB;
+  text-align: center;
+  color: #fff;
+  background-color: #317DF5;
+  cursor: pointer;
+</style>
+
+    <h1>Upload image to extract text</h1>
+
+<!--<form action="#" method="POST" enctype="multipart/form-data" >-->
+<!--  <div id="yourBtn" onclick="getFile()">click to upload a file</div>-->
+<!--  &lt;!&ndash; this is your file input tag, so i hide it!&ndash;&gt;-->
+<!--  &lt;!&ndash; i used the onchange event to fire the form submission&ndash;&gt;-->
+<!--  <div style='height: 0px;width: 0px; overflow:hidden;'><input id="upfile" type="file" value="upload" onchange="sub(this)" /></div>-->
+<!--  &lt;!&ndash; here you can have file submit button or you can write a simple script to upload the file automatically&ndash;&gt;-->
+<!--    &lt;!&ndash;   <input type="submit" value='submit' >&ndash;&gt;-->
+<!--</form>-->
+
+    <div id="content">
+        <form action="{{url_for('image_submit',postID=postID)}}" method="POST" enctype="multipart/form-data" name="myForm">
+          <div id="yourBtn" onclick="getFile()">click to upload a file</div>
+          <!-- this is your file input tag, so i hide it!-->
+          <!-- i used the onchange event to fire the form submission-->
+          <div style='height: 0px;width: 0px; overflow:hidden;'><input id="upfile" type="file" value="upload" onchange="sub(this); loading()" name="file"/></div>
+          <!-- here you can have file submit button or you can write a simple script to upload the file automatically-->
+          <!-- <input type="submit" value='submit' > -->
+        </form>
+    </div>
+
+    <div id="loading">
+        <button  class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+    </div>
+
+{% if text != "" %}
+<br><br>
+    <div class="container">
+        <div class="row">
+            <div class = "col">
+                <img src = '{{url}}' class="img-fluid">
+            </div>
+            <div class = "col">
+                <h3>Extracted Text:</h3><br>
+                <pre><p>{{text}}</p></pre>
+            </div>
+        </div>
+    </div>
+
+    <div> <br><br><br><br>
+        <form action="{{url_for('image_delete', postID=postID)}}" method="post">
+            <input type="submit" class="btn btn-link" value="Delete">
+        </form>
+    </div>
+{% endif %}
+
+
+
+
+
+
+
+<script>
+function getFile() {
+  document.getElementById("upfile").click();
+}
+
+function sub(obj) {
+  var file = obj.value;
+  var fileName = file.split("\\");
+  document.getElementById("yourBtn").innerHTML = fileName[fileName.length - 1];
+  document.myForm.submit();
+  event.preventDefault();
+}
+</script>
+
+{% endblock %}

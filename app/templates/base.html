@@ -1,0 +1,185 @@
+<style>
+.sidebar-container {
+  position: fixed;
+  width: 153px;
+  height: 100%;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #353840;
+  color: #fff;
+}
+
+.content-container {
+  padding-top: 20px;
+}
+
+.sidebar-logo {
+  padding: 10px 15px 10px 30px;
+  font-size: 20px;
+  background-color: #317DF5;
+}
+
+.sidebar-navigation {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  position: relative;
+}
+
+.sidebar-navigation li {
+  background-color: transparent;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  line-height: 20px;
+}
+
+.sidebar-navigation li a {
+  padding: 10px 15px 10px 5px;
+  display: block;
+  color: #fff;
+}
+
+.sidebar-navigation li .fa {
+  margin-right: 10px;
+}
+
+.sidebar-navigation li a:active,
+.sidebar-navigation li a:hover,
+.sidebar-navigation li a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+.sidebar-navigation li::before {
+  background-color: #317DF5;
+  position: absolute;
+  content: '';
+  height: 100%;
+  left: 0;
+  top: 0;
+  -webkit-transition: width 0.2s ease-in;
+  transition: width 0.2s ease-in;
+  width: 3px;
+  z-index: -1;
+}
+
+.sidebar-navigation li:hover::before {
+  width: 100%;
+}
+
+.sidebar-navigation .header {
+  font-size: 12px;
+  text-transform: uppercase;
+  background-color: #151515;
+  padding: 10px 15px 10px 30px;
+}
+
+.sidebar-navigation .header::before {
+  background-color: transparent;
+}
+
+.content-container {
+  padding-left: 220px;
+}
+</style>
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <title>{{title}}</title>
+    </head>
+
+    <!--navigation bar -->
+    <body>
+     <nav class="navbar sticky-top navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand" href="#"> TextConvert</a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+
+       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+         <ul class="navbar-nav mr-auto">
+           <li class="nav-item">
+             <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+           </li>
+           {% if 'username' in session %}
+           <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+           </li>
+           {% endif %}
+         </ul>
+       </div>
+     </nav>
+
+    <!--sidebar-->
+    <div class="sidebar-container">
+      <div class="sidebar-logo">
+        Menu
+      </div>
+      <ul class="sidebar-navigation">
+        <!--    <li class="header">Navigation</li>-->
+        <li>
+          <a href="{{ url_for('index') }}" onclick="loading()">
+            <i class="fa fa-cog" aria-hidden="true"></i> Your Files
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('textnote',postID='new') }}">
+            <i class="fa fa-home" aria-hidden="true"></i>Quick Note
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('image',postID='new') }}">
+            <i class="fa fa-tachometer" aria-hidden="true"></i> Image Textract
+          </a>
+        </li>
+        <!--    <li class="header">Another Menu</li>-->
+        <li>
+          <a href="{{ url_for('transcribe', postID = 'new') }}">
+            <i class="fa fa-users" aria-hidden="true"></i> Audio Transcribe
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('translate',postID='new') }}">
+            <i class="fa fa-cog" aria-hidden="true"></i> Translate
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="content-container">
+        <div class="container-fluid">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    function preloader(){
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("content").style.display = "block";
+    }//preloader
+    window.onload = preloader;
+
+    function loading(){
+        $("#loading").show();
+        $("#content").hide();
+    }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+

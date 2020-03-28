@@ -1,0 +1,131 @@
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the form  */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+.attachFileSpan{
+color:#2b6dad;
+cursor:pointer;
+}
+.attachFileSpan:{
+text-decoration: underline;
+}
+
+</style>
+
+
+{% extends "base.html" %}
+{% block content %}
+
+<form action="{{ url_for('textnote_submit',postID=postID) }}" enctype="multipart/form-data" method="post">
+    <div class="form-group shadow-textarea">
+    <pre><textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" name="text" rows="20"
+                  placeholder="Write something here...">{{text}}</textarea></pre>
+    </div>
+
+    <a href="#" onclick="openForm() " >Attachment:   </a> <a href="{{url}}" >{{attach}} </a><br><br>
+
+    <div id="content">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="submit" class="btn btn-primary" onclick="loading()">Save </button>
+            <button type="submit" formaction="{{ url_for('textnote_delete',postID=postID) }}" onclick="loading()" class="btn btn-secondary">Delete </button>
+        </div>
+    </div>
+
+    <div id="loading">
+        <button  class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+    </div>
+
+
+</form>
+
+
+<!--add attachment -->
+<div class="form-popup" id="myForm">
+
+  <form action="{{url_for('attachment',postID=postID)}}" class="form-container" enctype="multipart/form-data" method="post">
+
+        <label>Upload Attachment:</label>
+        <br> <br>
+
+   	    <input type="file"  class="form-control-file" size="60" name="file"> <br>
+
+   	    <input class="btn btn-outline-primary btn-sm" type="submit" value="Submit">
+
+	    <input class="btn btn-outline-secondary btn-sm" type="reset">
+
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+
+    </form>
+</div>
+
+
+
+<!--toggle popup menu-->
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+
+{% endblock %}

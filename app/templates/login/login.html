@@ -1,0 +1,52 @@
+{% extends "login/base_login.html" %}
+{% block content %}
+    <br>
+
+    <div class="row  d-flex justify-content-center">
+
+        <p class="text-secondary"><i>notebook + file attachment / image to text /
+            audio to text / text translation
+        </i></p>
+
+    </div>
+
+
+    <br>
+    <div class="row d-flex justify-content-center ">
+
+        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+
+        {% if error != None %}
+        <div><p class="text-danger">{{error}}</p></div>
+        {% endif %}
+        <br>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        <form method='post' action='login_submit'>
+        <div class="form-group">
+<!--        <label>Username:</label>-->
+        <input class="form-control" type='text' name='username' placeholder="username" value='{{username if username != None}}' required>
+        </div>
+
+        <div class="form-group ">
+<!--        <label>Password:</label>-->
+        <input class="form-control" type='password' placeholder="password" name='password' required>
+        </div>
+         <div class="text-center">
+            <input type='submit' class="btn btn btn-primary text-center" value='Submit'>
+         </div>
+        </form>
+
+    </div>
+
+    <br><br>
+    <div class="row d-flex justify-content-center">
+        <form method='post' action='new_user'>
+            <label>New User?</label>
+            <input type='submit' class="btn btn-link btn-sm " value='Create Account'>
+        </form>
+    </div>
+
+
+{% endblock %}

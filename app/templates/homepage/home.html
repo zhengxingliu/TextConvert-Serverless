@@ -1,0 +1,156 @@
+<style>
+.filterDiv {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.container {
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+/* Style the buttons */
+.btn {
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #ddd;
+}
+
+.btn.active {
+  background-color: #353840;
+  color: white;
+}
+
+
+</style>
+
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row">
+    <div class = 'col-xs-2'>
+        <h1>Your Files </h1>
+    </div>
+    <div class = 'col-sm-1'>
+        <div id="loading">
+            <div class="spinner-grow text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myBtnContainer" >
+  <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+  <button class="btn" onclick="filterSelection('textnote')"> note</button>
+  <button class="btn" onclick="filterSelection('textract')"> textract</button>
+  <button class="btn" onclick="filterSelection('transcribe')"> transcribe</button>
+  <button class="btn" onclick="filterSelection('transcribe')"> translate</button>
+</div><br>
+
+
+<div class="list-group ">
+
+    {% if textnote == [] and textract == [] and transcribe == [] and translate == []  %}
+    <li class="list-group-item"><p class="text-muted">Create your first note.</p></li>
+    {% endif %}
+
+    <div class="filterDiv textnote">
+    {% for item in textnote %}
+     <a href={{url_for('textnote',postID=item['postID'])}} onclick="loading()" class="list-group-item list-group-item-action">
+         {{item['timestamp']}}
+          <span class="badge badge-light badge-pill"> Note </span>
+         {{ item['start_with'] }}
+     </a>
+    {% endfor %}
+    </div>
+
+    <div class="filterDiv textract">
+        {% for item in textract %}
+         <a href={{url_for('image',postID=item['postID'])}} onclick="loading()" class="list-group-item list-group-item-action">
+             {{item['timestamp']}}
+             <span class="badge badge-light badge-pill"> Textract</span>
+             {{item['filename']}} </a>
+        {% endfor %}
+    </div>
+
+    <div class="filterDiv transcribe">
+    {% for item in transcribe %}
+     <a href={{url_for('transcribe',postID=item['postID'])}} onclick="loading()" class="list-group-item list-group-item-action">
+         {{item['timestamp']}}
+         <span class="badge badge-light badge-pill"> Transcribe </span>
+         {{    "[{}] {}".format(item['status'], item['filename'])  }} </a>
+    {% endfor %}
+    </div>
+
+    <div class="filterDiv translate">
+    {% for item in translate %}
+     <a href={{url_for('translate',postID=item['postID'])}} onclick="loading()" class="list-group-item list-group-item-action">
+         {{item['timestamp']}}
+          <span class="badge badge-light badge-pill"> Translate </span>
+         {{ item['start_with'] }}
+     </a>
+    {% endfor %}
+    </div>
+</div>
+
+
+
+
+<script>
+filterSelection("all")
+function filterSelection(c) {
+  var x, i;
+  x = document.getElementsByClassName("filterDiv");
+  if (c == "all") c = "";
+  for (i = 0; i < x.length; i++) {
+    w3RemoveClass(x[i], "show");
+    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+  }
+}
+
+function w3AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+  }
+}
+
+function w3RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1);
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+// Add active class to the current button (highlight it)
+var btnContainer = document.getElementById("myBtnContainer");
+var btns = btnContainer.getElementsByClassName("btn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function(){
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
+</script>
+
+{% endblock %}
+

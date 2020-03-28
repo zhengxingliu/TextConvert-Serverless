@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<form action="{{ url_for('translate_submit',postID=postID) }}" enctype="multipart/form-data" method="post">
+
+
+    <div class="form-group shadow-textarea">
+    <pre><textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" name="text" rows="10"
+                  placeholder="What would do like to translate?">{{text}}</textarea></pre>
+    </div>
+
+    Target Language:
+
+    <select name="target_lan">
+    <option value="ar">Arabic</option>
+      <option value="zh">Chinese</option>
+      <option value="cs">Czech</option>
+      <option value="da">Danish</option>
+      <option value="nl">Dutch</option>
+      <option value="en">English</option>
+      <option value="fi">Finnish</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <option value="da">Danish</option>
+      <option value="nl">Dutch</option>
+      <option value="el">Greek</option>
+      <option value="he">Hebrew</option>
+      <option value="hi">Hindi</option>
+      <option value="hu">Hungarian</option>
+      <option value="id">Indonesian</option>
+      <option value="it">Italian</option>
+      <option value="ja">Japanese</option>
+      <option value="ko">Korean</option>
+      <option value="ms">Malay</option>
+      <option value="no">Norwegian</option>
+      <option value="fa">Persian</option>
+      <option value="pl">Polish</option>
+      <option value="pt">Portuguese</option>
+      <option value="ro">Romanian</option>
+      <option value="ru">Russian</option>
+      <option value="es">Spanish</option>
+      <option value="sv">Swedish</option>
+      <option value="th">Thai</option>
+      <option value="tr">Turkish</option>
+      <option value="uk">Ukrainian</option>
+      <option value="ur">Urdu</option>
+      <option value="vi">Vietnamese</option>
+    </select>
+
+    <br><br>
+
+
+
+    <div id="content">
+        <div class="btn-group" role="group" aria-label="Basic example">
+        <!--    <button type="button" class="btn cancel btn btn-outline-primary" onclick="openForm()">Attachment </button>-->
+            <button type="submit" class="btn btn-primary" onclick="loading()">Translate </button>
+            <button type="submit" formaction="{{ url_for('translate_delete',postID=postID) }}"
+                    class="btn btn-secondary" onclick="loading()">Delete </button>
+        </div>
+    </div>
+
+    <div id="loading">
+        <button  class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+    </div>
+
+    <br><br>
+</form>
+
+ <div class="card">
+     <div class="card-body">
+    {% if translation != "" %}
+     <h4>Translation: </h4><br>
+     <pre><p>{{translation}}</p></pre>
+    {% endif %}
+     </div>
+ </div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        ece1779a3 user analytics
+    </title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+
+    <!-- Script to get JSON file and display its content -->
+    <script type="text/javascript" language="javascript">
+
+
+        $(document).ready(function() {
+
+            $("#fetch").click(function(event){
+            var username = $("#txt").val();
+                $.getJSON('https://7pmgnuo82c.execute-api.us-east-1.amazonaws.com/dev/?username=' + username  , function(data) {
+                    $('#display').html('<p> note requests: ' + data.note_req + '</p>');
+                    $('#display').append('<p> note data (bytes): ' + data.note_size+ '</p>');
+                    $('#display').append('<p> textract requests: ' + data.textract_req+ '</p>');
+                    $('#display').append('<p> textract data (bytes): ' + data.textract_size+ '</p>');
+                    $('#display').append('<p> transcribe requests: ' + data.transcribe_req+ '</p>');
+                    $('#display').append('<p> transcribe data (bytes): ' + data.transcribe_size+ '</p>');
+                    $('#display').append('<p> translate requests: ' + data.translate_req+ '</p>');
+                    $('#display').append('<p> translate data (bytes): ' + data.translate_size+ '</p>');
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+   
+        Find usage for user: <input type="text" id="txt" value="total" />
+
+
+    <div id="display" style="background-color:#FFFFFF;"></div>
+
+    <input type="button" id="fetch" value="Fetch" />
+
+</body>
+</html> 
